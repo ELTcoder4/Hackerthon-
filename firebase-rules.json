@@ -1,0 +1,27 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+
+    "quizState": {
+      ".read": true,
+      ".write": true
+    },
+    "pollData": {
+      ".read": true,
+      ".write": true
+    },
+    "scores": {
+      ".read": true,
+      ".write": true
+    },
+    "broadcast": {
+      ".read": true,
+      ".write": true
+    },
+    "teams": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

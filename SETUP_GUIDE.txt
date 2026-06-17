@@ -1,0 +1,131 @@
+╔══════════════════════════════════════════════════════════════════╗
+║          DESIGNVERSE — FIREBASE SETUP GUIDE                      ║
+║          (Free — takes about 5 minutes)                          ║
+╚══════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1 — Create a Firebase Project (FREE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to: https://console.firebase.google.com
+2. Click "Add project"
+3. Name it: designverse-hackathon  (or anything you like)
+4. Disable Google Analytics (not needed) → click "Create project"
+5. Wait ~30 seconds for it to set up, then click "Continue"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2 — Enable Realtime Database
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. In your new project, click "Build" in the left sidebar
+2. Click "Realtime Database"
+3. Click "Create Database"
+4. Choose a location (any — pick the closest to India, e.g. us-central1)
+5. Select "Start in TEST MODE" → click "Enable"
+   ✅ Your database is now live!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3 — Copy Your Firebase Config
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Click the ⚙️ gear icon (top-left) → "Project settings"
+2. Scroll down to "Your apps"
+3. Click the </> (Web) icon to register a web app
+4. Give it a nickname: "Designverse Web"
+5. DO NOT check Firebase Hosting → click "Register app"
+6. You'll see a code block like this:
+
+   const firebaseConfig = {
+     apiKey: "AIzaSy...",
+     authDomain: "designverse-hackathon.firebaseapp.com",
+     databaseURL: "https://designverse-hackathon-default-rtdb.firebaseio.com",
+     projectId: "designverse-hackathon",
+     storageBucket: "designverse-hackathon.appspot.com",
+     messagingSenderId: "123456789",
+     appId: "1:123456789:web:abc123"
+   };
+
+7. Copy ALL of it.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4 — Paste Config into index.html
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Open index.html in any text editor (VS Code, Notepad++, etc.)
+2. Search for:  PASTE_YOUR_API_KEY_HERE
+3. Replace the entire firebaseConfig block (lines ~9–18) with
+   the config you copied from Firebase.
+
+   BEFORE:
+     const firebaseConfig = {
+       apiKey:            "PASTE_YOUR_API_KEY_HERE",
+       authDomain:        "PASTE_YOUR_AUTH_DOMAIN_HERE",
+       databaseURL:       "PASTE_YOUR_DATABASE_URL_HERE",
+       ...
+     };
+
+   AFTER (example):
+     const firebaseConfig = {
+       apiKey:            "AIzaSyXXXXXXXXXXX",
+       authDomain:        "designverse-hackathon.firebaseapp.com",
+       databaseURL:       "https://designverse-hackathon-default-rtdb.firebaseio.com",
+       projectId:         "designverse-hackathon",
+       storageBucket:     "designverse-hackathon.appspot.com",
+       messagingSenderId: "123456789",
+       appId:             "1:123456789:web:abcdef"
+     };
+
+4. Save the file.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 5 — Apply Database Security Rules
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. In Firebase Console → Realtime Database → click "Rules" tab
+2. Delete all existing text
+3. Open firebase-rules.json (from this zip) and copy its contents
+4. Paste into the Rules editor
+5. Click "Publish"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 6 — Host & Share the App (Optional but recommended)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Option A — Simple (no install needed):
+  • Upload index.html to any free host:
+    - https://netlify.com → drag & drop the file
+    - https://vercel.com  → import from folder
+    - https://tiiny.host  → drag & drop (simplest)
+  • Share the URL with participants
+
+Option B — Local (only accessible on your WiFi):
+  • Open terminal in the folder containing index.html
+  • Run:  npx serve .
+  • Share:  http://YOUR_LOCAL_IP:3000
+  • All devices on the same WiFi can access it
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT SYNCS IN REAL-TIME (across all devices)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Quiz questions — admin releases Q1, Q2... everyone sees it instantly
+✅ 30-second countdown timer
+✅ Live poll bars — fill as teams answer
+✅ Leaderboard — updates after every question
+✅ Answer reveal — admin reveals → everyone sees correct answer
+✅ Problem statement broadcast — admin sends → participants see banner
+✅ Team registry — admin adds teams → available for login immediately
+✅ Quiz reset — admin resets → all screens go back to waiting
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADMIN LOGINS (built into the app)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Username: naman    Email: naman@gmail.com
+Username: palak    Email: palak@gmail.com
+
+Both have full admin access — quiz control, team management, broadcast.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILES IN THIS ZIP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  index.html          ← Main app (open this in browser)
+  firebase-rules.json ← Paste into Firebase Console → Rules
+  SETUP_GUIDE.txt     ← This file
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEED HELP? Look for the line:  PASTE_YOUR_API_KEY_HERE  in index.html
+That's the only thing you need to change!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

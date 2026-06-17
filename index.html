@@ -7,6 +7,152 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <!-- SheetJS for Excel read/write -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+// ══════════════════════════════════════════════════
+//  🔥 FIREBASE CONFIG — REPLACE WITH YOUR OWN VALUES
+//  See SETUP_GUIDE.txt for instructions
+// ══════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "PASTE_YOUR_API_KEY_HERE",
+  authDomain:        "PASTE_YOUR_AUTH_DOMAIN_HERE",
+  databaseURL:       "PASTE_YOUR_DATABASE_URL_HERE",
+  projectId:         "PASTE_YOUR_PROJECT_ID_HERE",
+  storageBucket:     "PASTE_YOUR_STORAGE_BUCKET_HERE",
+  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID_HERE",
+  appId:             "PASTE_YOUR_APP_ID_HERE"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ══ FIREBASE SYNC HELPERS ══
+function fbSet(path, data) {
+  return db.ref(path).set(data).catch(e => console.warn('FB write failed:', e));
+}
+function fbUpdate(path, data) {
+  return db.ref(path).update(data).catch(e => console.warn('FB update failed:', e));
+}
+function fbOn(path, cb) {
+  db.ref(path).on('value', snap => cb(snap.val()));
+}
+function fbOff(path) {
+  db.ref(path).off();
+}
+
+// ══ REAL-TIME LISTENERS — set up after DOM ready ══
+function initFirebaseListeners() {
+
+  // 1. Quiz state (admin pushes → all users receive)
+  fbOn('quizState', val => {
+    if (!val) return;
+    const prev = quizState.currentQIndex;
+    quizState.currentQIndex  = val.currentQIndex  ?? -1;
+    quizState.releasedUpTo   = val.releasedUpTo   ?? -1;
+    quizState.answerRevealed = val.answerRevealed  ?? false;
+    quizState.quizEnded      = val.quizEnded       ?? false;
+    quizState.timerLeft      = val.timerLeft       ?? 30;
+    // Re-render quiz page if visible
+    const qPage = document.getElementById('page-quiz');
+    if (qPage && qPage.classList.contains('active')) initQuizPage();
+    // Update admin panel if visible
+    renderAdminQuizPanel();
+    // Start timer for participants on new question
+    if (!activeAdminUser && val.currentQIndex !== prev && val.currentQIndex >= 0 && !val.answerRevealed) {
+      startQuizTimer();
+    }
+    if (val.answerRevealed) {
+      clearInterval(quizState.timerInterval);
+      quizState.answerRevealed = true;
+      renderCurrentQuestion();
+    }
+  });
+
+  // 2. Poll data (answers → live bar updates for everyone)
+  fbOn('pollData', val => {
+    if (!val) return;
+    quizState.pollData = val;
+    renderPoll();
+    renderAdminQuizPanel();
+  });
+
+  // 3. Scores & leaderboard
+  fbOn('scores', val => {
+    if (!val) return;
+    quizState.scores  = val.scores  || {};
+    quizState.correct = val.correct || {};
+    quizState.leaderboardHistory = val.leaderboardHistory || [];
+    renderQuizLeaderboard();
+    renderQuizLeaderboard('adminLeaderboardList','adminLbAfterLabel');
+    renderAdminQuizPanel();
+    if (document.getElementById('quizStatScore'))
+      document.getElementById('quizStatScore').textContent = quizState.scores[authenticatedStudentTeam?.id] || 0;
+  });
+
+  // 4. Broadcast message (problem statement)
+  fbOn('broadcast', val => {
+    if (!val) return;
+    isProblemRevealed = val.revealed || false;
+    const banner = document.getElementById('hackerProblemBanner');
+    const text   = document.getElementById('broadcastMessageText');
+    if (banner && text) {
+      text.textContent = val.message || '';
+      banner.classList.toggle('active', isProblemRevealed);
+    }
+  });
+
+  // 5. Teams registry (admin creates team → all see update)
+  fbOn('teams', val => {
+    if (!val) return;
+    systemTeams = Object.values(val);
+    refreshTeamRegistryViews();
+    renderAdminQuizPanel();
+  });
+}
+
+// ══ FIREBASE WRITE WRAPPERS ══
+
+// Push quiz state to all users
+function fbPushQuizState() {
+  fbSet('quizState', {
+    currentQIndex:  quizState.currentQIndex,
+    releasedUpTo:   quizState.releasedUpTo,
+    answerRevealed: quizState.answerRevealed,
+    quizEnded:      quizState.quizEnded,
+    timerLeft:      quizState.timerLeft,
+    updatedAt:      Date.now()
+  });
+}
+
+// Push scores after every answer
+function fbPushScores() {
+  fbSet('scores', {
+    scores:             quizState.scores,
+    correct:            quizState.correct,
+    leaderboardHistory: quizState.leaderboardHistory,
+    updatedAt:          Date.now()
+  });
+}
+
+// Push poll data after every team answer
+function fbPushPoll() {
+  fbSet('pollData', quizState.pollData);
+}
+
+// Push teams registry
+function fbPushTeams() {
+  const teamsObj = {};
+  systemTeams.forEach(t => { teamsObj[t.id] = t; });
+  fbSet('teams', teamsObj);
+}
+
+// Push broadcast message
+function fbPushBroadcast(message, revealed) {
+  fbSet('broadcast', { message, revealed, updatedAt: Date.now() });
+}
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
 
@@ -1574,6 +1720,8 @@ function commitAuthPayloadToGlobalRegistry() {
   if (!valid || members.length !== currentTeamSize) { alert(`Halt: Fill all ${currentTeamSize} member name boxes.`); return; }
 
   systemTeams.push({ id:token, name, members, registration_date: new Date().toISOString().split('T')[0], is_first_login:true, first_login_timestamp:"Awaiting Session...", details });
+  // 🔥 Sync teams to Firebase
+  fbPushTeams();
   alert(`Successfully created "${name}" with ${currentTeamSize} members and saved to your directory.`);
   document.getElementById('auth-team-designation').value = "";
   document.getElementById('auth-event-token').value = "";
@@ -1621,6 +1769,8 @@ function commitTeamToRegistry() {
   if (systemTeams.some(t => t.id.toLowerCase() === id.toLowerCase() || t.name.toLowerCase() === name.toLowerCase())) { alert("Error: This team name or code is already in use."); return; }
   systemTeams.push({ id, name, members:[], registration_date: new Date().toISOString().split('T')[0], is_first_login:true, first_login_timestamp:"Awaiting Session...", details:[], maxSize: quickTeamSize });
   nameEl.value = ""; idEl.value = "";
+  // 🔥 Sync teams to Firebase
+  fbPushTeams();
   refreshTeamRegistryViews();
 }
 
@@ -1635,13 +1785,17 @@ function commitMemberToTeam() {
   team.members.push(name);
   if (!team.details) team.details = [];
   team.details.push({ name, role, link:"Added via Admin Panel" });
-  inp.value = ""; refreshTeamRegistryViews();
+  inp.value = "";
+  // 🔥 Sync to Firebase
+  fbPushTeams();
+  refreshTeamRegistryViews();
 }
 
-function removeTeamNode(i) { systemTeams.splice(i, 1); refreshTeamRegistryViews(); }
+function removeTeamNode(i) { systemTeams.splice(i, 1); fbPushTeams(); refreshTeamRegistryViews(); }
 function removeMemberNode(ti, mi) {
   systemTeams[ti].members.splice(mi,1);
   if (systemTeams[ti].details) systemTeams[ti].details.splice(mi,1);
+  fbPushTeams();
   refreshTeamRegistryViews();
 }
 
@@ -1731,14 +1885,17 @@ function toggleProblemRelease() {
   const display = document.getElementById("broadcastMessageText");
   const btn     = document.getElementById("broadcastBtn");
   isProblemRevealed = !isProblemRevealed;
+  const message = document.getElementById("challengeInput").value.trim();
   if (isProblemRevealed) {
-    display.innerText = document.getElementById("challengeInput").value.trim();
+    display.innerText = message;
     banner.classList.add("active");
     btn.innerText = "Hide Broadcasted Statement"; btn.style.background = "var(--red)"; btn.style.color = "#fff";
   } else {
     banner.classList.remove("active");
     btn.innerText = "Send Problem Statement to Workspace"; btn.style.background = "var(--accent)"; btn.style.color = "#000";
   }
+  // 🔥 Push broadcast to Firebase — all participants see/hide the banner instantly
+  fbPushBroadcast(message, isProblemRevealed);
 }
 
 function setupNoCopyConstraints() {
@@ -2047,6 +2204,10 @@ function quizSelectOption(optIdx) {
     quizState.correct[teamId] = (quizState.correct[teamId] || 0) + 1;
   }
 
+  // 🔥 Push to Firebase so admin & leaderboard update for everyone
+  fbPushPoll();
+  fbPushScores();
+
   renderCurrentQuestion();
   renderAdminQuizPanel();
 }
@@ -2092,6 +2253,8 @@ function snapshotLeaderboard() {
     .map(([id, sc]) => ({ id, name: systemTeams.find(t=>t.id===id)?.name || id, score: sc, correct: quizState.correct[id]||0 }))
     .sort((a,b)=>b.score-a.score);
   quizState.leaderboardHistory[qi] = snap;
+  // 🔥 Push updated leaderboard snapshot to Firebase
+  fbPushScores();
 }
 
 /* ── Poll render ── */
@@ -2195,25 +2358,25 @@ function spawnConfetti() {
 function adminReleaseNextQuestion() {
   if (quizState.releasedUpTo >= 39) { showSyncToast('All 40 questions released!'); return; }
 
-  // Snapshot leaderboard for the just-completed question
-  if (quizState.currentQIndex >= 0) {
-    snapshotLeaderboard();
-  }
+  if (quizState.currentQIndex >= 0) snapshotLeaderboard();
 
   clearInterval(quizState.timerInterval);
   quizState.releasedUpTo++;
   quizState.currentQIndex = quizState.releasedUpTo;
   quizState.answerRevealed = false;
+  quizState.timerLeft = QUIZ_TIMER_SEC;
+
+  // 🔥 Push to Firebase — all participants receive this
+  fbPushQuizState();
 
   startQuizTimer();
   renderAdminQuizPanel();
   renderCurrentQuestion();
 
-  // Update participant waiting screens
   document.getElementById('quizWaitingScreen').style.display = 'none';
   document.getElementById('quizActiveView').style.display = 'block';
 
-  showSyncToast(`▶ Q${quizState.currentQIndex+1} released!`);
+  showSyncToast(`▶ Q${quizState.currentQIndex+1} released to all participants!`);
 }
 
 function adminSkipQuestion() {
@@ -2221,6 +2384,8 @@ function adminSkipQuestion() {
   clearInterval(quizState.timerInterval);
   quizState.answerRevealed = true;
   snapshotLeaderboard();
+  // 🔥 Push skip to Firebase
+  fbPushQuizState();
   renderAdminQuizPanel();
   renderCurrentQuestion();
   showSyncToast(`⏭ Q${quizState.currentQIndex+1} skipped.`,'var(--yellow)');
@@ -2229,40 +2394,51 @@ function adminSkipQuestion() {
 function adminRevealAnswer() {
   if (quizState.currentQIndex < 0) { showSyncToast('No active question.','var(--yellow)'); return; }
   clearInterval(quizState.timerInterval);
+  quizState.answerRevealed = true;
+  // 🔥 Push reveal to Firebase — everyone sees the answer
+  fbPushQuizState();
   autoRevealAnswer();
-  showSyncToast(`✓ Answer for Q${quizState.currentQIndex+1} revealed.`);
+  showSyncToast(`✓ Answer for Q${quizState.currentQIndex+1} revealed to all.`);
 }
 
 function adminJumpToQuestion(idx) {
   if (idx > quizState.releasedUpTo) {
-    showSyncToast(`Q${idx+1} not yet released. Release next to advance.`,'var(--yellow)');
+    showSyncToast(`Q${idx+1} not yet released.`,'var(--yellow)');
     return;
   }
   clearInterval(quizState.timerInterval);
   quizState.currentQIndex = idx;
   quizState.answerRevealed = true;
+  // 🔥 Push jump to Firebase
+  fbPushQuizState();
   renderCurrentQuestion();
   renderAdminQuizPanel();
   showSyncToast(`Viewing Q${idx+1}`);
 }
 
 function adminResetQuiz() {
-  if (!confirm('Reset the entire quiz? All scores and answers will be cleared.')) return;
+  if (!confirm('Reset the entire quiz? All scores and answers will be cleared for everyone.')) return;
   clearInterval(quizState.timerInterval);
   quizState = { ...quizState, currentQIndex:-1, releasedUpTo:-1, answered:{}, scores:{}, correct:{}, timerLeft:30, answerRevealed:false, quizEnded:false, pollData:[], leaderboardHistory:[] };
+  // 🔥 Wipe Firebase data
+  fbSet('quizState', { currentQIndex:-1, releasedUpTo:-1, answerRevealed:false, quizEnded:false, timerLeft:30, updatedAt:Date.now() });
+  fbSet('scores', { scores:{}, correct:{}, leaderboardHistory:[], updatedAt:Date.now() });
+  fbSet('pollData', []);
   renderAdminQuizPanel();
   initQuizPage();
-  showSyncToast('↺ Quiz reset.','var(--red)');
+  showSyncToast('↺ Quiz reset for everyone.','var(--red)');
 }
 
 function adminEndQuiz() {
   clearInterval(quizState.timerInterval);
   quizState.quizEnded = true;
   snapshotLeaderboard();
+  // 🔥 Push end to Firebase
+  fbPushQuizState();
   renderQuizResult();
   document.getElementById('quizActiveView').style.display = 'none';
   document.getElementById('quizResultScreen').style.display = 'block';
-  showSyncToast('✓ Quiz ended. Final results shown.');
+  showSyncToast('✓ Quiz ended. Final results shown to all.');
 }
 
 function adminExportQuizResults() {
@@ -2357,8 +2533,9 @@ function adminJumpReleaseToQ(idx) {
   startGlobalChronometer();
   renderAdminFigmaVault();
   renderAdminQuizPanel();
+  // 🔥 Start Firebase real-time listeners
+  initFirebaseListeners();
   excelLog('Admin dashboard ready. Use Export to download data or Import to sync from Excel.', 'ok');
-
 </script>
 </body>
-</html>
+</html> 
