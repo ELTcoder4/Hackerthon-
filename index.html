@@ -110,6 +110,21 @@ function initFirebaseListeners() {
     refreshTeamRegistryViews();
     renderAdminQuizPanel();
   });
+
+  // 6. Answered map — syncs team responses across all devices so admin sees live counts
+  fbOn('answered', val => {
+    if (!val) return;
+    quizState.answered = val;
+    renderAdminQuizPanel();
+    renderCurrentQuestion();
+  });
+
+  // 7. Figma submissions — syncs across all devices so admin sees every team's link
+  fbOn('figmaSubmissions', val => {
+    if (!val) return;
+    figmaSubmissions = Object.values(val);
+    renderAdminFigmaVault();
+  });
 }
 
 // ══ FIREBASE WRITE WRAPPERS ══
@@ -124,6 +139,11 @@ function fbPushQuizState() {
     timerLeft:      quizState.timerLeft,
     updatedAt:      Date.now()
   });
+}
+
+// Push answered map so admin sees real-time response counts from all devices
+function fbPushAnswered() {
+  fbSet('answered', quizState.answered);
 }
 
 // Push scores after every answer
@@ -1977,6 +1997,11 @@ function submitFigmaLink() {
   okEl.style.display = 'block';
   input.value = '';
 
+  // 🔥 Push to Firebase — admin and all devices see it in real-time
+  const figmaObj = {};
+  figmaSubmissions.forEach(s => { figmaObj[s.teamId] = s; });
+  fbSet('figmaSubmissions', figmaObj);
+
   // Disable input briefly to prevent double-submit
   const btn = document.querySelector('[onclick="submitFigmaLink()"]');
   if (btn) { btn.disabled = true; setTimeout(() => { btn.disabled = false; }, 3000); }
@@ -2028,6 +2053,10 @@ function renderAdminFigmaVault() {
 
 function removeFigmaEntry(index) {
   figmaSubmissions.splice(index, 1);
+  // 🔥 Sync deletion to Firebase
+  const figmaObj = {};
+  figmaSubmissions.forEach(s => { figmaObj[s.teamId] = s; });
+  fbSet('figmaSubmissions', figmaObj);
   renderAdminFigmaVault();
   showSyncToast('Figma entry removed.');
 }
@@ -2207,6 +2236,7 @@ function quizSelectOption(optIdx) {
   // 🔥 Push to Firebase so admin & leaderboard update for everyone
   fbPushPoll();
   fbPushScores();
+  fbPushAnswered();
 
   renderCurrentQuestion();
   renderAdminQuizPanel();
@@ -2424,6 +2454,8 @@ function adminResetQuiz() {
   fbSet('quizState', { currentQIndex:-1, releasedUpTo:-1, answerRevealed:false, quizEnded:false, timerLeft:30, updatedAt:Date.now() });
   fbSet('scores', { scores:{}, correct:{}, leaderboardHistory:[], updatedAt:Date.now() });
   fbSet('pollData', []);
+  fbSet('answered', {});
+  fbSet('figmaSubmissions', {});
   renderAdminQuizPanel();
   initQuizPage();
   showSyncToast('↺ Quiz reset for everyone.','var(--red)');
@@ -2538,4 +2570,4 @@ function adminJumpReleaseToQ(idx) {
   excelLog('Admin dashboard ready. Use Export to download data or Import to sync from Excel.', 'ok');
 </script>
 </body>
-</html> 
+</html>
