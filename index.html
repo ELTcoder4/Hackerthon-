@@ -307,6 +307,111 @@
   .sheet-tab-row { display: flex; gap: 4px; margin-bottom: 0; border-bottom: 2px solid #1d6f42; }
   .sheet-tab { padding: 6px 14px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-dim); background: #080808; border: 1px solid #1d3a20; border-bottom: none; }
   .sheet-tab.active { color: #000; background: #1d6f42; }
+
+  /* ══ QUIZ SECTION STYLES ══ */
+  .quiz-page-layout { max-width: 1400px; margin: 0 auto; padding: 32px; }
+  .quiz-access-gate { max-width: 480px; margin: 80px auto; text-align: center; background: var(--surface-card); border: 2px solid var(--border-dark); box-shadow: 8px 8px 0 var(--border-dark); padding: 48px 40px; }
+  .quiz-grid { display: grid; grid-template-columns: 1fr 380px; gap: 32px; }
+  @media(max-width:1100px){ .quiz-grid { grid-template-columns: 1fr; } }
+
+  /* Question card */
+  .quiz-question-card { background: var(--surface-card); border: 2px solid var(--border-dark); box-shadow: 8px 8px 0 var(--border-dark); padding: 32px; position: relative; min-height: 400px; }
+  .quiz-q-label { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: .15em; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .quiz-q-text { font-size: 22px; font-weight: 700; line-height: 1.35; color: #fff; margin-bottom: 28px; }
+  .quiz-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:700px){ .quiz-options-grid { grid-template-columns: 1fr; } }
+
+  .quiz-option-btn {
+    padding: 18px 20px; background: #0a0a0a; border: 2px solid #222; color: #ccc;
+    font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
+    text-align: left; transition: all .2s cubic-bezier(.34,1.56,.64,1);
+    display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden;
+  }
+  .quiz-option-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--border-dark); }
+  .quiz-option-btn .opt-letter { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text-dim); background: #1a1a1a; border: 1px solid #333; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .quiz-option-btn.selected { border-color: var(--accent); background: rgba(198,241,53,.06); color: var(--accent); }
+  .quiz-option-btn.selected .opt-letter { background: var(--accent); color: #000; border-color: var(--accent); }
+  .quiz-option-btn.correct { border-color: var(--green); background: rgba(47,168,79,.1); color: var(--green); }
+  .quiz-option-btn.correct .opt-letter { background: var(--green); color: #fff; border-color: var(--green); }
+  .quiz-option-btn.wrong { border-color: var(--red); background: rgba(255,45,45,.07); color: var(--red); }
+  .quiz-option-btn.wrong .opt-letter { background: var(--red); color: #fff; border-color: var(--red); }
+  .quiz-option-btn:disabled { opacity: .7; }
+
+  /* Poll bar */
+  .poll-bar-wrap { margin-top: 8px; }
+  .poll-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-family: 'Space Mono', monospace; font-size: 11px; }
+  .poll-bar-label { width: 20px; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .poll-bar-track { flex: 1; background: #111; border: 1px solid #222; height: 24px; position: relative; overflow: hidden; }
+  .poll-bar-fill { height: 100%; background: var(--accent); transition: width .7s cubic-bezier(.25,1,.5,1); position: relative; }
+  .poll-bar-fill.fill-correct { background: var(--green); }
+  .poll-bar-fill.fill-wrong { background: #333; }
+  .poll-bar-pct { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); color: #000; font-size: 10px; font-weight: 700; white-space: nowrap; }
+  .poll-bar-count { font-size: 10px; color: var(--text-dim); width: 40px; text-align: right; flex-shrink: 0; }
+
+  /* Timer ring */
+  .quiz-timer-ring { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative; }
+  .quiz-timer-svg { transform: rotate(-90deg); }
+  .quiz-timer-track { fill: none; stroke: #1a1a1a; stroke-width: 6; }
+  .quiz-timer-arc { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset .9s linear, stroke .4s; }
+  .quiz-timer-text { position: absolute; font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: #fff; }
+  .quiz-timer-label { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: .12em; }
+
+  /* Leaderboard panel */
+  .leaderboard-panel { background: #080808; border: 2px solid #1a1a1a; box-shadow: 6px 6px 0 var(--border-dark); padding: 0; overflow: hidden; position: sticky; top: 90px; }
+  .lb-header { background: #000; padding: 16px 20px; border-bottom: 2px solid #1a1a1a; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: .1em; display: flex; justify-content: space-between; align-items: center; }
+  .lb-after-q { font-size: 9px; color: var(--text-dim); }
+  .lb-row { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid #0f0f0f; transition: background .2s; }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: rgba(255,255,255,.015); }
+  .lb-rank { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; width: 28px; flex-shrink: 0; }
+  .lb-rank.gold { color: #ffd700; }
+  .lb-rank.silver { color: #aaa; }
+  .lb-rank.bronze { color: #cd7f32; }
+  .lb-team { font-weight: 700; font-size: 13px; flex: 1; color: #fff; }
+  .lb-score { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 700; }
+  .lb-delta { font-family: 'Space Mono', monospace; font-size: 10px; padding: 2px 6px; border: 1px solid; }
+  .lb-delta.up { color: var(--green); border-color: var(--green); background: rgba(47,168,79,.08); }
+  .lb-delta.same { color: var(--text-dim); border-color: #333; }
+  .lb-empty { text-align: center; padding: 40px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); }
+
+  /* Question nav pills (admin) */
+  .q-nav-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  @media(max-width:600px){ .q-nav-grid { grid-template-columns: repeat(5, 1fr); } }
+  .q-nav-pill { padding: 8px 4px; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; background: #0a0a0a; border: 1px solid #222; color: var(--text-dim); text-align: center; transition: all .2s cubic-bezier(.34,1.56,.64,1); }
+  .q-nav-pill.active-q { border-color: var(--accent); color: var(--accent); background: rgba(198,241,53,.07); }
+  .q-nav-pill.released { border-color: var(--green); color: var(--green); background: rgba(47,168,79,.07); }
+  .q-nav-pill.locked { border-color: #333; color: #444; }
+
+  /* Quiz stats bar */
+  .quiz-stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+  @media(max-width:700px){ .quiz-stat-row { grid-template-columns: repeat(2,1fr); } }
+  .quiz-stat-block { background: #0a0a0a; border: 2px solid var(--border-dark); padding: 18px; }
+  .quiz-stat-val { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: var(--accent); }
+
+  /* waiting/result states */
+  .quiz-waiting-screen, .quiz-result-screen { text-align: center; padding: 60px 32px; }
+  .quiz-waiting-pulse { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); margin: 0 auto 24px; animation: quiz-pulse 1.8s ease-in-out infinite; }
+  @keyframes quiz-pulse { 0%,100%{transform:scale(1);opacity:.9;} 50%{transform:scale(1.18);opacity:.5;} }
+  .quiz-result-badge { font-size: 64px; margin-bottom: 16px; }
+
+  /* Confetti burst */
+  .confetti-burst { position:fixed;inset:0;pointer-events:none;z-index:99000;overflow:hidden; }
+  .conf-dot { position:absolute;border-radius:50%;animation:conf-fall 1.4s ease-in forwards; }
+  @keyframes conf-fall { 0%{transform:translateY(0) rotate(0deg);opacity:1;} 100%{transform:translateY(110vh) rotate(720deg);opacity:0;} }
+
+  .quiz-answer-reveal-box { background:#0a0a0a;border:2px solid var(--green);padding:16px 20px;margin-top:20px;display:none; }
+  .quiz-answer-reveal-box.show { display:block; }
+
+  /* Admin quiz controls */
+  .admin-quiz-card { background: linear-gradient(135deg,#0a0a00,#0f0f05); border: 2px solid #333300; box-shadow: 8px 8px 0 #000; padding: 28px; margin-bottom: 32px; }
+  .q-schedule-row { display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #111;font-size:12px; }
+  .q-schedule-row:last-child { border-bottom:none; }
+  .q-schedule-row.released-row { background:rgba(47,168,79,.05);border-left:3px solid var(--green); }
+  .q-schedule-row.active-row { background:rgba(198,241,53,.05);border-left:3px solid var(--accent); }
+  .q-schedule-num { font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);width:32px;flex-shrink:0; }
+  .q-schedule-text { flex:1;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .q-release-time { font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);width:80px;text-align:right;flex-shrink:0; }
+
 </style>
 </head>
 <body>
@@ -334,6 +439,7 @@
   <div class="portal-switcher-tabs">
     <button class="switcher-tab active" id="tab-user" onclick="handleWorkspaceTabRouting('user')"><span>User Portal</span></button>
     <button class="switcher-tab" id="tab-admin" onclick="handleWorkspaceTabRouting('admin')"><span>Admin Hub</span></button>
+    <button class="switcher-tab" id="tab-quiz" onclick="handleWorkspaceTabRouting('quiz')"><span>⚡ Quiz</span></button>
   </div>
   <div class="nav-avatar" id="current-user-avatar">👤 GUEST</div>
 </nav>
@@ -462,46 +568,28 @@
 
         <!-- IMPORT -->
         <div class="excel-action-block">
-          <div class="excel-action-title">📥 Import Roster — Auto Event ID</div>
-          <div class="excel-action-desc">Upload <strong style="color:#4caf70;">any simple roster sheet</strong>. The system reads team names and member names, then <strong style="color:var(--accent);">auto-generates a unique 5-digit event ID</strong> for each team. No specific format required.</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-            <button class="btn-excel btn-excel-import" onclick="downloadRosterTemplate()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download Template
-            </button>
-          </div>
+          <div class="excel-action-title">📥 Import — Excel → Admin</div>
+          <div class="excel-action-desc">Upload a previously exported (or manually edited) Excel file to sync all changes back into the admin panel. Follows the same sheet structure.</div>
           <div class="drop-zone" id="excelDropZone">
             <input type="file" id="excelFileInput" accept=".xlsx,.xls" onchange="handleExcelImport(event)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <div>Drop roster .xlsx here or <span style="color:var(--accent);">click to browse</span></div>
-            <div style="font-size:10px;color:#2a5e38;margin-top:4px;">Any format accepted — just needs Team_Name + Member columns</div>
+            <div>Drop .xlsx here or <span style="color:var(--accent);">click to browse</span></div>
+            <div style="font-size:10px;color:#2a5e38;margin-top:4px;">Accepts: designverse_hackathon_data.xlsx</div>
           </div>
         </div>
       </div>
 
-      <!-- Import Preview Panel -->
-      <div id="importPreviewPanel" style="display:none;margin-top:20px;border:2px solid var(--accent);background:#090e04;padding:20px;">
-        <div style="font-family:'Space Mono';font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">
-          ✦ Import Preview — Review Before Saving
-        </div>
-        <div id="importPreviewTable" style="overflow-x:auto;max-height:280px;overflow-y:auto;"></div>
-        <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
-          <button class="form-submit" data-hover="CONFIRM &amp; SAVE ALL TEAMS" style="margin:0;padding:14px 28px;width:auto;" onclick="confirmImport()">✓ Confirm &amp; Save Teams</button>
-          <button class="btn-action" onclick="cancelImport()">✕ Cancel</button>
-          <span id="importPreviewCount" style="font-family:'Space Mono';font-size:11px;color:var(--text-dim);display:flex;align-items:center;"></span>
-        </div>
-      </div>
-
-      <!-- Format guide -->
+      <!-- Excel structure legend -->
       <div style="margin-top:16px;border-top:1px solid #1d3a20;padding-top:16px;">
         <div class="sheet-tab-row">
-          <div class="sheet-tab active">Simple Roster (Recommended)</div>
-          <div class="sheet-tab">Full Export Format</div>
+          <div class="sheet-tab active">Sheet 1 — Teams</div>
+          <div class="sheet-tab">Sheet 2 — Members</div>
+          <div class="sheet-tab">Sheet 3 — Event Codes</div>
         </div>
-        <div style="background:#040a06;border:1px solid #1d3a20;border-top:none;padding:14px 16px;font-family:'Space Mono';font-size:10px;color:#2a5e38;line-height:1.8;">
-          <strong style="color:#4caf70;">Simple Roster columns (any order):</strong> Team_Name | Member_1 | Member_2 | Member_3 | Member_4 | Member_5<br>
-          <span style="color:#1d6f42;">OR separate rows per member:</span> Team_Name | Member_Name | Role (optional)<br>
-          <strong style="color:var(--accent);">5-Digit Event ID is auto-generated for each team automatically.</strong>
+        <div style="background:#040a06;border:1px solid #1d3a20;border-top:none;padding:14px 16px;font-family:'Space Mono';font-size:10px;color:#2a5e38;">
+          <strong style="color:#4caf70;">Teams:</strong> Team_Name | Team_ID | Registration_Date | Member_Count | First_Login_Status | First_Login_Timestamp &nbsp;|&nbsp;
+          <strong style="color:#4caf70;">Members:</strong> Member_Name | Role | Team_Name | Team_ID | Profile_Link &nbsp;|&nbsp;
+          <strong style="color:#4caf70;">Event_Codes:</strong> Team_Name | Event_Code | Code_Created_Date | Status
         </div>
       </div>
 
@@ -664,7 +752,7 @@
 
     <!-- ZIP Vault -->
     <div class="span-full brutalist-card">
-      <div class="card-header-mono">Submitted Solutions Vault (.ZIP Files) <span style="font-size:9px;color:#444;font-weight:400;margin-left:8px;">● LIVE SYNC</span></div>
+      <div class="card-header-mono">Submitted Solutions Vault (.ZIP Files)</div>
       <div class="data-list" id="adminZipRepository">
         <div style="text-align:center;padding:48px;font-family:'Space Mono';font-size:12px;color:var(--text-muted);">Awaiting team design solutions to be uploaded from student work areas...</div>
       </div>
@@ -679,13 +767,51 @@
         </div>
         <span class="figma-count-badge" id="figmaVaultCountBadge">0 Links Submitted</span>
       </div>
-      <div class="figma-status-bar" id="figmaVaultStatus" style="display:flex;align-items:center;gap:10px;">
-        <span style="width:8px;height:8px;background:var(--blue);border-radius:50%;flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite;display:inline-block;"></span>
+      <div class="figma-status-bar" id="figmaVaultStatus">
         Awaiting Figma prototype submissions from participant teams...
-        <span style="margin-left:auto;font-size:10px;color:#333;">AUTO-SYNC: 8s</span>
       </div>
       <div id="figmaVaultList">
         <div style="text-align:center;padding:48px;font-family:'Space Mono';font-size:12px;color:var(--text-muted);" id="figmaVaultEmpty">No Figma links submitted yet. Participants will submit from their workspace.</div>
+      </div>
+    </div>
+
+    <!-- ⚡ QUIZ MASTER CONTROL (Admin Only) -->
+    <div class="span-full admin-quiz-card" style="margin-top:8px;">
+      <div class="card-header-mono" style="border-bottom-color:#2a2a00;margin-bottom:20px;">
+        <span>⚡ Quiz Master Control Panel</span>
+        <span class="tag tag-yellow" id="adminQuizStatusBadge">0/40 Released</span>
+      </div>
+
+      <div class="quiz-stat-row">
+        <div class="quiz-stat-block"><label class="control-label">Current Q</label><div class="quiz-stat-val" id="adminCurrentQStat">—</div></div>
+        <div class="quiz-stat-block"><label class="control-label">Responses</label><div class="quiz-stat-val" id="adminResponsesStat">0</div></div>
+        <div class="quiz-stat-block"><label class="control-label">Teams Active</label><div class="quiz-stat-val" id="adminTeamActiveStat">0</div></div>
+        <div class="quiz-stat-block"><label class="control-label">Avg Score</label><div class="quiz-stat-val" id="adminAvgScoreStat">0</div></div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+        <button class="btn-accent-sm" onclick="adminReleaseNextQuestion()">▶ Release Next Question</button>
+        <button class="btn-action" onclick="adminSkipQuestion()">⏭ Skip Question</button>
+        <button class="btn-action" onclick="adminRevealAnswer()">✓ Reveal Answer Now</button>
+        <button class="btn-action" onclick="adminEndQuiz()">🏁 End Quiz</button>
+        <button class="btn-action" style="color:var(--red);border-color:var(--red);" onclick="adminResetQuiz()">↺ Reset Quiz</button>
+        <button class="btn-action" onclick="adminExportQuizResults()">📥 Export Results</button>
+      </div>
+
+      <label class="control-label" style="margin-bottom:10px;">Question Navigator</label>
+      <div class="q-nav-grid" id="adminQNavGrid" style="margin-bottom:24px;"></div>
+
+      <div style="border-top:2px dashed #2a2a00;padding-top:20px;">
+        <label class="control-label" style="margin-bottom:12px;">Question Release Schedule — All 40</label>
+        <div style="max-height:380px;overflow-y:auto;background:#000;border:1px solid #1a1a00;" id="adminQScheduleList"></div>
+      </div>
+
+      <div style="margin-top:28px;border-top:2px dashed #2a2a00;padding-top:20px;">
+        <label class="control-label" style="margin-bottom:12px;">Live Leaderboard (Admin View)</label>
+        <div class="leaderboard-panel" style="position:static;">
+          <div class="lb-header"><span>🏆 Live Rankings</span><span class="lb-after-q" id="adminLbAfterLabel">After Q0</span></div>
+          <div id="adminLeaderboardList"><div class="lb-empty">No answers yet</div></div>
+        </div>
       </div>
     </div>
 
@@ -775,7 +901,119 @@
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- PAGE: QUIZ (PARTICIPANT VIEW) -->
+<div id="page-quiz" class="page">
+  <div class="quiz-page-layout">
+
+    <!-- ACCESS GATE (shown when not logged in) -->
+    <div id="quizAccessGate" class="quiz-access-gate" style="display:none;">
+      <div style="font-size:48px;margin-bottom:16px;">⚡</div>
+      <h2 style="font-family:'Space Mono',monospace;font-size:20px;font-weight:700;margin-bottom:8px;color:var(--accent);">QUIZ ZONE</h2>
+      <p style="font-size:12px;color:var(--text-dim);font-family:'Space Mono';margin-bottom:24px;">Login to your team workspace first to participate in the quiz.</p>
+      <button class="form-submit" data-hover="GO TO LOGIN" style="width:auto;padding:14px 32px;display:inline-block;" onclick="handleWorkspaceTabRouting('user')">Go to Team Login</button>
+    </div>
+
+    <!-- WAITING SCREEN (logged in, no question released yet) -->
+    <div id="quizWaitingScreen" style="display:none;">
+      <div class="quiz-waiting-screen">
+        <div class="quiz-waiting-pulse"></div>
+        <h2 style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;">STANDBY FOR NEXT QUESTION</h2>
+        <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">The admin will release questions one by one. Stay ready!</p>
+        <div style="font-family:'Space Mono';font-size:11px;color:var(--accent);" id="quizWaitTeamTag">TEAM: —</div>
+        <div style="margin-top:32px;font-family:'Space Mono';font-size:11px;color:#333;text-transform:uppercase;letter-spacing:.1em;" id="quizProgressLabel">0 / 40 Questions Released</div>
+      </div>
+    </div>
+
+    <!-- ACTIVE QUIZ VIEW -->
+    <div id="quizActiveView" style="display:none;">
+      <!-- Stats bar -->
+      <div class="quiz-stat-row">
+        <div class="quiz-stat-block"><label class="control-label">Question</label><div class="quiz-stat-val" id="quizStatQ">1</div></div>
+        <div class="quiz-stat-block"><label class="control-label">Your Score</label><div class="quiz-stat-val" id="quizStatScore">0</div></div>
+        <div class="quiz-stat-block"><label class="control-label">Correct</label><div class="quiz-stat-val" style="color:var(--green);" id="quizStatCorrect">0</div></div>
+        <div class="quiz-stat-block"><label class="control-label">Responded</label><div class="quiz-stat-val" style="color:var(--yellow);" id="quizStatResponded">0/0</div></div>
+      </div>
+
+      <div class="quiz-grid">
+        <!-- LEFT: question + poll -->
+        <div>
+          <div class="quiz-question-card">
+            <div class="crosshair-decor" style="top:14px;right:14px;"></div>
+            <div class="quiz-q-label">
+              <span id="quizQNum">QUESTION 1 / 40</span>
+              <span class="tag tag-yellow" id="quizQCategory">Design Thinking</span>
+            </div>
+
+            <!-- Timer ring -->
+            <div class="quiz-timer-ring">
+              <svg class="quiz-timer-svg" width="90" height="90" viewBox="0 0 90 90">
+                <circle class="quiz-timer-track" cx="45" cy="45" r="38"/>
+                <circle class="quiz-timer-arc" id="quizTimerArc" cx="45" cy="45" r="38" stroke-dasharray="238.76" stroke-dashoffset="0"/>
+              </svg>
+              <div class="quiz-timer-text" id="quizTimerText">30</div>
+              <div class="quiz-timer-label">seconds</div>
+            </div>
+
+            <div class="quiz-q-text" id="quizQuestionText">Loading question...</div>
+            <div class="quiz-options-grid" id="quizOptionsGrid"></div>
+
+            <!-- Answer reveal (after timeout or answered) -->
+            <div class="quiz-answer-reveal-box" id="quizAnswerReveal">
+              <div style="font-family:'Space Mono';font-size:10px;color:var(--green);font-weight:700;margin-bottom:6px;">✓ CORRECT ANSWER</div>
+              <div style="font-size:14px;font-weight:700;color:#fff;" id="quizCorrectAnswerText"></div>
+              <div style="font-size:12px;color:var(--text-dim);margin-top:6px;" id="quizExplanationText"></div>
+            </div>
+          </div>
+
+          <!-- Poll section -->
+          <div class="brutalist-card" style="margin-top:24px;">
+            <div class="card-header-mono">
+              <span>📊 Live Poll — Team Responses</span>
+              <span class="tag tag-blue" id="quizPollTotal">0 votes</span>
+            </div>
+            <div class="poll-bar-wrap" id="quizPollBars"></div>
+            <div style="margin-top:14px;font-family:'Space Mono';font-size:10px;color:#333;text-transform:uppercase;letter-spacing:.08em;">Poll updates in real time as teams answer</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Leaderboard -->
+        <div>
+          <div class="leaderboard-panel">
+            <div class="lb-header">
+              <span>🏆 Leaderboard</span>
+              <span class="lb-after-q" id="lbAfterLabel">After Q0</span>
+            </div>
+            <div id="quizLeaderboardList"><div class="lb-empty">Leaderboard will populate after Q1</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN (after all questions) -->
+    <div id="quizResultScreen" style="display:none;">
+      <div class="quiz-result-screen">
+        <div class="quiz-result-badge" id="quizResultBadge">🎉</div>
+        <h2 style="font-family:'Space Mono',monospace;font-size:26px;font-weight:700;color:var(--accent);margin-bottom:8px;">QUIZ COMPLETE!</h2>
+        <p style="font-size:14px;color:var(--text-dim);margin-bottom:28px;" id="quizResultSummary">—</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:500px;margin:0 auto 32px;">
+          <div class="quiz-stat-block"><label class="control-label">Final Score</label><div class="quiz-stat-val" id="resFinalScore">0</div></div>
+          <div class="quiz-stat-block"><label class="control-label">Correct</label><div class="quiz-stat-val" style="color:var(--green);" id="resCorrect">0/40</div></div>
+          <div class="quiz-stat-block"><label class="control-label">Rank</label><div class="quiz-stat-val" style="color:var(--yellow);" id="resRank">#—</div></div>
+        </div>
+        <!-- Final leaderboard -->
+        <div class="leaderboard-panel" style="max-width:500px;margin:0 auto;position:static;">
+          <div class="lb-header"><span>🏆 Final Leaderboard</span></div>
+          <div id="quizFinalLeaderboard"><div class="lb-empty">—</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
 <div class="dialog-overlay" id="confirmSubmitDialog">
   <div class="dialog-box">
     <div style="color:var(--yellow);font-size:18px;font-weight:700;">⚠️ Confirm Permanent Solution Submission?</div>
@@ -875,7 +1113,7 @@ let systemTeams = [
     ]
   }
 ];
-let loggedSubmissionsZip = []; // legacy — now uses window.storage (shared)
+let loggedSubmissionsZip = [];
 
 /* ══ EXCEL LOG UTIL ══ */
 function excelLog(msg, type = 'info') {
@@ -998,215 +1236,113 @@ function styleExcelHeader(ws, colCount) {
 }
 
 /* ══════════════════════════════════════════════
-   SMART EXCEL IMPORT — Auto Event ID Generator
-   Accepts ANY roster format, detects columns automatically
+   EXCEL IMPORT — .xlsx upload → Admin panel sync
 ══════════════════════════════════════════════ */
-
-let _pendingImport = []; // holds parsed teams awaiting admin confirmation
-
-/* Generate a unique 5-digit numeric ID not already in systemTeams */
-function generateUniqueEventId() {
-  const used = new Set(systemTeams.map(t => t.id));
-  let id;
-  do { id = String(Math.floor(10000 + Math.random() * 90000)); } while (used.has(id));
-  used.add(id); // reserve it immediately for subsequent calls in same batch
-  return id;
-}
-
-/* Download a clean blank roster template */
-function downloadRosterTemplate() {
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet([
-    ['Team_Name', 'Member_1', 'Member_2', 'Member_3', 'Member_4', 'Member_5'],
-    ['Team Alpha', 'Aman Sharma', 'Priya Verma', 'Rohit Jain', '', ''],
-    ['Team Beta',  'Sneha Patel', 'Karan Mehta', 'Ankur Das', 'Neha Gupta', ''],
-  ]);
-  ws['!cols'] = [{wch:18},{wch:20},{wch:20},{wch:20},{wch:20},{wch:20}];
-  styleExcelHeader(ws, 6);
-  XLSX.utils.book_append_sheet(wb, ws, 'Roster');
-  XLSX.writeFile(wb, 'designverse_roster_template.xlsx');
-  excelLog('Roster template downloaded.', 'ok');
-}
-
 function handleExcelImport(event) {
   const file = event.target.files[0];
   if (!file) return;
   if (!file.name.match(/\.(xlsx|xls)$/i)) {
-    excelLog('Import rejected: must be .xlsx or .xls', 'err');
+    excelLog('Import rejected: file must be .xlsx or .xls', 'err');
     showSyncToast('✗ Invalid file — use .xlsx format', 'var(--red)');
     return;
   }
-  excelLog(`Reading: ${file.name} (${(file.size/1024).toFixed(1)} KB)…`, 'info');
-  setExcelStatus('Parsing roster file…', true);
+
+  excelLog(`Reading file: ${file.name} (${(file.size / 1024).toFixed(1)} KB)…`, 'info');
+  setExcelStatus('Reading Excel file…', true);
 
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const wb = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
-      const sheetName = wb.SheetNames[0];
-      excelLog(`Sheet detected: "${sheetName}"`, 'info');
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array' });
 
-      const raw = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { defval: '', header: 1 });
-      if (!raw.length) {
-        excelLog('File is empty.', 'err');
-        showSyncToast('✗ Empty file', 'var(--red)');
+      const sheetNames = wb.SheetNames;
+      excelLog(`Workbook loaded — sheets found: ${sheetNames.join(', ')}`, 'info');
+
+      // Find required sheets (case-insensitive)
+      const findSheet = (keyword) => {
+        const name = sheetNames.find(n => n.toLowerCase().includes(keyword.toLowerCase()));
+        return name ? XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: '' }) : null;
+      };
+
+      const teamsRows  = findSheet('team');
+      const membersRows = findSheet('member');
+
+      if (!teamsRows) {
+        excelLog('Import aborted: "Teams" sheet not found in workbook.', 'err');
+        showSyncToast('✗ Import failed: Teams sheet missing', 'var(--red)');
         return;
       }
 
-      /* ── Detect format ── */
-      const headers = raw[0].map(h => String(h).trim().toLowerCase());
-      const hasTeamCol    = headers.some(h => h.includes('team'));
-      const hasMemberCol  = headers.some(h => h.includes('member') || h.includes('name'));
-      const hasSeparateRows = headers.some(h => h.includes('member_name') || h === 'name');
+      /* Build new systemTeams from Teams sheet */
+      const importedTeams = [];
+      teamsRows.forEach(row => {
+        const name = (row['Team_Name'] || '').toString().trim();
+        const id   = (row['Team_ID']   || '').toString().trim();
+        if (!name || !id) return;
 
-      let parsed = [];
+        const regDate = (row['Registration_Date'] || new Date().toISOString().split('T')[0]).toString().trim();
+        const maxSz   = parseInt(row['Max_Size']) || 3;
+        const loginTs = (row['First_Login_Timestamp'] || 'Awaiting Session...').toString().trim();
+        const isNew   = loginTs === 'Awaiting Session...' || (row['First_Login_Status'] || '').toString().includes('Not');
 
-      if (hasSeparateRows) {
-        /* FORMAT A: One row per member — Team_Name | Member_Name | Role */
-        const teamIdx   = headers.findIndex(h => h.includes('team'));
-        const memberIdx = headers.findIndex(h => h.includes('member_name') || h === 'name' || (h.includes('member') && !h.match(/\d/)));
-        const roleIdx   = headers.findIndex(h => h.includes('role'));
-
-        const teamMap = {};
-        raw.slice(1).forEach(row => {
-          const tName = String(row[teamIdx] || '').trim();
-          const mName = String(row[memberIdx] || '').trim();
-          if (!tName || !mName) return;
-          if (!teamMap[tName]) teamMap[tName] = { name: tName, members: [], details: [] };
-          const role = roleIdx >= 0 ? String(row[roleIdx] || '').trim() || ROLES[teamMap[tName].members.length % ROLES.length] : ROLES[teamMap[tName].members.length % ROLES.length];
-          teamMap[tName].members.push(mName);
-          teamMap[tName].details.push({ name: mName, role, link: 'N/A' });
+        importedTeams.push({
+          id, name,
+          members: [],
+          details: [],
+          registration_date: regDate,
+          maxSize: maxSz,
+          is_first_login: isNew,
+          first_login_timestamp: loginTs
         });
-        parsed = Object.values(teamMap);
-
-      } else if (hasTeamCol) {
-        /* FORMAT B: One row per team — Team_Name | Member_1 | Member_2 | ... */
-        const teamIdx = headers.findIndex(h => h.includes('team'));
-        const memberCols = headers.reduce((acc, h, i) => {
-          if (i !== teamIdx && (h.includes('member') || h.includes('name') || h === '')) acc.push(i);
-          return acc;
-        }, []);
-
-        raw.slice(1).forEach(row => {
-          const tName = String(row[teamIdx] || '').trim();
-          if (!tName) return;
-          const members = memberCols
-            .map(ci => String(row[ci] || '').trim())
-            .filter(Boolean);
-          if (!members.length) return;
-          parsed.push({
-            name: tName,
-            members,
-            details: members.map((m, i) => ({ name: m, role: ROLES[i % ROLES.length], link: 'N/A' }))
-          });
-        });
-
-      } else {
-        /* FORMAT C: Fallback — treat col 0 as team, rest as members */
-        excelLog('No recognised headers. Treating column 1 as Team, rest as Members.', 'info');
-        raw.slice(1).forEach(row => {
-          const tName = String(row[0] || '').trim();
-          if (!tName) return;
-          const members = row.slice(1).map(c => String(c || '').trim()).filter(Boolean);
-          if (!members.length) return;
-          parsed.push({
-            name: tName,
-            members,
-            details: members.map((m, i) => ({ name: m, role: ROLES[i % ROLES.length], link: 'N/A' }))
-          });
-        });
-      }
-
-      if (!parsed.length) {
-        excelLog('No valid teams found. Check your file has Team Name + Member columns.', 'err');
-        showSyncToast('✗ No teams detected — check format', 'var(--red)');
-        return;
-      }
-
-      /* ── Assign auto Event IDs ── */
-      const usedIds = new Set(systemTeams.map(t => t.id));
-      parsed = parsed.map(t => {
-        // Keep existing ID if team name already registered
-        const existing = systemTeams.find(st => st.name.toLowerCase() === t.name.toLowerCase());
-        let id;
-        if (existing) {
-          id = existing.id;
-        } else {
-          do { id = String(Math.floor(10000 + Math.random() * 90000)); } while (usedIds.has(id));
-          usedIds.add(id);
-        }
-        return {
-          ...t,
-          id,
-          registration_date: new Date().toISOString().split('T')[0],
-          maxSize: t.members.length,
-          is_first_login: true,
-          first_login_timestamp: 'Awaiting Session...'
-        };
       });
 
-      _pendingImport = parsed;
-      showImportPreview(parsed);
-      excelLog(`Preview ready — ${parsed.length} teams, ${parsed.reduce((s,t)=>s+t.members.length,0)} members. Confirm to save.`, 'info');
+      /* Fill member info from Members sheet */
+      if (membersRows) {
+        membersRows.forEach(row => {
+          const memberName = (row['Member_Name'] || '').toString().trim();
+          const role       = (row['Role']        || 'Member').toString().trim();
+          const teamId     = (row['Team_ID']     || '').toString().trim();
+          const link       = (row['Profile_Link'] || 'N/A').toString().trim();
+          if (!memberName || !teamId) return;
+
+          const team = importedTeams.find(t => t.id === teamId);
+          if (team) {
+            team.members.push(memberName);
+            team.details.push({ name: memberName, role, link });
+          }
+        });
+      }
+
+      if (!importedTeams.length) {
+        excelLog('Import warning: No valid team rows found in Teams sheet.', 'err');
+        showSyncToast('✗ No valid teams found in file', 'var(--red)');
+        return;
+      }
+
+      /* Merge strategy: replace by ID, keep un-matched existing teams */
+      const importedIds = new Set(importedTeams.map(t => t.id));
+      const retained = systemTeams.filter(t => !importedIds.has(t.id));
+      systemTeams = [...retained, ...importedTeams];
+
+      /* Refresh UI */
+      refreshTeamRegistryViews();
+
+      const totalMembers = importedTeams.reduce((s, t) => s + t.members.length, 0);
+      excelLog(`Import complete — ${importedTeams.length} teams synced, ${totalMembers} members loaded.`, 'ok');
+      setExcelStatus(`Last import: ${new Date().toLocaleTimeString()} — ${importedTeams.length} teams synced`, true);
+      showSyncToast(`✓ Synced ${importedTeams.length} teams, ${totalMembers} members from Excel`);
+
+      // Reset file input
       event.target.value = '';
 
     } catch (err) {
-      excelLog('Parse error: ' + err.message, 'err');
-      setExcelStatus('Import failed — invalid file', false);
+      excelLog('Import parse error: ' + err.message, 'err');
+      setExcelStatus('Import failed — invalid file format', false);
       showSyncToast('✗ Parse error: ' + err.message, 'var(--red)');
     }
   };
   reader.readAsArrayBuffer(file);
-}
-
-function showImportPreview(teams) {
-  const panel = document.getElementById('importPreviewPanel');
-  const table = document.getElementById('importPreviewTable');
-  const count = document.getElementById('importPreviewCount');
-  const totalMembers = teams.reduce((s,t)=>s+t.members.length,0);
-  count.textContent = `${teams.length} team${teams.length!==1?'s':''} · ${totalMembers} member${totalMembers!==1?'s':''}`;
-
-  table.innerHTML = `
-    <table class="matrix-table" style="min-width:600px;">
-      <thead><tr>
-        <th>#</th><th>Team Name</th>
-        <th style="color:var(--accent);">Auto Event ID</th>
-        <th>Members</th><th>Roles</th>
-      </tr></thead>
-      <tbody>
-        ${teams.map((t,i) => `
-          <tr>
-            <td style="color:var(--text-dim);font-family:'Space Mono';">${i+1}</td>
-            <td style="color:#fff;font-weight:700;">${escHtml(t.name)}</td>
-            <td><span style="background:var(--accent);color:#000;font-family:'Space Mono';font-weight:700;font-size:13px;padding:3px 10px;">${escHtml(t.id)}</span></td>
-            <td style="font-family:'Space Mono';font-size:11px;color:var(--text-dim);">${t.members.map(m=>escHtml(m)).join('<br>')}</td>
-            <td style="font-size:11px;">${t.details.map(d=>`<span class="tag tag-blue" style="margin-bottom:2px;">${escHtml(d.role)}</span>`).join(' ')}</td>
-          </tr>`).join('')}
-      </tbody>
-    </table>`;
-  panel.style.display = 'block';
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function confirmImport() {
-  if (!_pendingImport.length) return;
-  const importedIds = new Set(_pendingImport.map(t => t.id));
-  const retained = systemTeams.filter(t => !importedIds.has(t.id) &&
-    !_pendingImport.some(pt => pt.name.toLowerCase() === t.name.toLowerCase()));
-  systemTeams = [...retained, ..._pendingImport];
-  const total = _pendingImport.reduce((s,t)=>s+t.members.length,0);
-  excelLog(`✓ Saved ${_pendingImport.length} teams, ${total} members. Event IDs assigned.`, 'ok');
-  setExcelStatus(`Last import: ${new Date().toLocaleTimeString()} — ${_pendingImport.length} teams saved`, true);
-  showSyncToast(`✓ ${_pendingImport.length} teams imported with auto Event IDs`);
-  _pendingImport = [];
-  document.getElementById('importPreviewPanel').style.display = 'none';
-  refreshTeamRegistryViews();
-}
-
-function cancelImport() {
-  _pendingImport = [];
-  document.getElementById('importPreviewPanel').style.display = 'none';
-  excelLog('Import cancelled.', 'info');
 }
 
 /* Drag & drop for the import zone */
@@ -1291,6 +1427,13 @@ function handleWorkspaceTabRouting(portalKey) {
   if (portalKey === 'admin') {
     document.getElementById('tab-admin').classList.add('active');
     navigate(activeAdminUser ? 'admin-dashboard' : 'admin-auth');
+  } else if (portalKey === 'quiz') {
+    document.getElementById('tab-quiz').classList.add('active');
+    navigate('quiz');
+    // Show admin quiz panel inside admin-quiz page only for admins
+    const adminQuizPage = document.getElementById('page-admin-quiz');
+    if (adminQuizPage) adminQuizPage.style.display = 'none';
+    setTimeout(() => { initQuizPage(); renderAdminQuizPanel(); }, 50);
   } else {
     document.getElementById('tab-user').classList.add('active');
     navigate(authenticatedStudentTeam ? 'workspace-view' : 'landing');
@@ -1609,86 +1752,34 @@ function setupNoCopyConstraints() {
 
 function triggerPermanentSubmitDialog() { document.getElementById("confirmSubmitDialog").classList.add("active"); }
 function dismissSubmitDialog() { document.getElementById("confirmSubmitDialog").classList.remove("active"); }
-
-/* ══════════════════════════════════════════════
-   SHARED PERSISTENT STORAGE HELPERS
-   All data stored with shared:true so every device sees it
-══════════════════════════════════════════════ */
-const STORAGE_KEY_ZIPS   = 'hackathon-zip-submissions';
-const STORAGE_KEY_FIGMA  = 'hackathon-figma-submissions';
-
-async function storageGet(key) {
-  try {
-    const r = await window.storage.get(key, true);
-    return r ? JSON.parse(r.value) : [];
-  } catch { return []; }
-}
-
-async function storageSet(key, value) {
-  try {
-    await window.storage.set(key, JSON.stringify(value), true);
-  } catch(e) { console.error('Storage write failed:', e); }
-}
-
-/* ══ ZIP / CODE SUBMISSION ══ */
-async function executeFinalPublishChain() {
+function executeFinalPublishChain() {
   dismissSubmitDialog();
   const tName = authenticatedStudentTeam?.name || "Unknown_Team";
   const tId   = authenticatedStudentTeam?.id   || "00000";
-
-  const zips = await storageGet(STORAGE_KEY_ZIPS);
-  // Replace existing entry for this team or push new
-  const idx = zips.findIndex(z => z.teamId === tId);
-  const entry = {
-    teamId: tId,
-    teamName: tName,
-    fileName: `${tName.replace(/\s+/g,'_')}_ID_${tId}_Build.zip`,
-    time: new Date().toLocaleTimeString(),
-    timestamp: new Date().toLocaleString(),
-    htmlLength: document.getElementById("editorIndex").value.length
-  };
-  if (idx >= 0) zips[idx] = entry; else zips.push(entry);
-  await storageSet(STORAGE_KEY_ZIPS, zips);
-
-  await renderAdminZipRepository();
+  loggedSubmissionsZip.push({ fileName:`${tName.replace(/\s+/g,'_')}_ID_${tId}_Build.zip`, time:new Date().toLocaleTimeString(), htmlLength:document.getElementById("editorIndex").value.length });
+  renderAdminZipRepository();
   navigate('thank-you');
 }
-
-async function renderAdminZipRepository() {
+function renderAdminZipRepository() {
   const c = document.getElementById("adminZipRepository"); if (!c) return;
-  const zips = await storageGet(STORAGE_KEY_ZIPS);
   c.innerHTML = "";
-  if (!zips.length) {
+  if (!loggedSubmissionsZip.length) {
     c.innerHTML = `<div style="text-align:center;padding:48px;font-family:'Space Mono';font-size:12px;color:var(--text-muted);">Awaiting team design solutions...</div>`;
     return;
   }
-  zips.forEach((a, i) => {
+  loggedSubmissionsZip.forEach(a => {
     const el = document.createElement("div"); el.className = "zip-item";
-    el.innerHTML = `
-      <div>
-        <span style="color:var(--accent);font-weight:700;">📦 ${escHtml(a.fileName)}</span>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;font-family:'Space Mono';">
-          ${escHtml(a.teamName)} · Submitted ${escHtml(a.time)}
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn-accent-sm" onclick="alert('ZIP download requires a server backend.')">⬇ Download ZIP</button>
-        <button class="btn-action" style="font-size:10px;padding:8px 12px;" onclick="removeZipEntry(${i})">✕</button>
-      </div>`;
+    el.innerHTML = `<div><span style="color:var(--accent);font-weight:700;">📦 ${a.fileName}</span><div style="font-size:11px;color:var(--text-dim);margin-top:2px;font-family:'Space Mono';">Uploaded at ${a.time}</div></div><button class="btn-accent-sm" onclick="alert('Downloading...')">Download ZIP</button>`;
     c.appendChild(el);
   });
 }
 
-async function removeZipEntry(index) {
-  const zips = await storageGet(STORAGE_KEY_ZIPS);
-  zips.splice(index, 1);
-  await storageSet(STORAGE_KEY_ZIPS, zips);
-  await renderAdminZipRepository();
-  showSyncToast('Submission removed.');
-}
+/* ══════════════════════════════════════════════
+   FIGMA LINK VAULT — Participant Submit + Admin View
+══════════════════════════════════════════════ */
+let figmaSubmissions = []; // { teamName, teamId, url, submittedAt }
 
-/* ══ FIGMA LINK VAULT ══ */
-async function submitFigmaLink() {
+function submitFigmaLink() {
   const input = document.getElementById('figmaLinkInput');
   const errEl = document.getElementById('figmaError');
   const okEl  = document.getElementById('figmaSuccess');
@@ -1709,57 +1800,63 @@ async function submitFigmaLink() {
     errEl.style.display = 'block'; return;
   }
 
-  const btn = document.querySelector('[onclick="submitFigmaLink()"]');
-  if (btn) btn.disabled = true;
+  // Check if already submitted by this team — update if so
+  const existing = figmaSubmissions.find(s => s.teamId === authenticatedStudentTeam.id);
+  if (existing) {
+    existing.url = url;
+    existing.submittedAt = new Date().toLocaleTimeString();
+    existing.updatedAt = new Date().toLocaleString();
+  } else {
+    figmaSubmissions.push({
+      teamName: authenticatedStudentTeam.name,
+      teamId:   authenticatedStudentTeam.id,
+      url,
+      submittedAt:  new Date().toLocaleTimeString(),
+      updatedAt:    new Date().toLocaleString()
+    });
+  }
 
-  const submissions = await storageGet(STORAGE_KEY_FIGMA);
-  const existing = submissions.findIndex(s => s.teamId === authenticatedStudentTeam.id);
-  const entry = {
-    teamName:    authenticatedStudentTeam.name,
-    teamId:      authenticatedStudentTeam.id,
-    url,
-    submittedAt: new Date().toLocaleTimeString(),
-    updatedAt:   new Date().toLocaleString()
-  };
-  if (existing >= 0) submissions[existing] = entry; else submissions.push(entry);
-  await storageSet(STORAGE_KEY_FIGMA, submissions);
-
-  okEl.textContent = `✓ Figma link submitted for ${authenticatedStudentTeam.name}! Organizers can now access your design.`;
+  okEl.textContent = `✓ Figma link submitted successfully for ${authenticatedStudentTeam.name}! Organizers can now access your design.`;
   okEl.style.display = 'block';
   input.value = '';
-  if (btn) setTimeout(() => { btn.disabled = false; }, 3000);
 
-  await renderAdminFigmaVault();
+  // Disable input briefly to prevent double-submit
+  const btn = document.querySelector('[onclick="submitFigmaLink()"]');
+  if (btn) { btn.disabled = true; setTimeout(() => { btn.disabled = false; }, 3000); }
+
+  renderAdminFigmaVault();
   showSyncToast(`🎨 Figma link received from ${authenticatedStudentTeam.name}`);
 }
 
-async function renderAdminFigmaVault() {
-  const list     = document.getElementById('figmaVaultList');
-  const badge    = document.getElementById('figmaVaultCountBadge');
-  const statusEl = document.getElementById('figmaVaultStatus');
+function renderAdminFigmaVault() {
+  const list    = document.getElementById('figmaVaultList');
+  const empty   = document.getElementById('figmaVaultEmpty');
+  const badge   = document.getElementById('figmaVaultCountBadge');
+  const statusEl= document.getElementById('figmaVaultStatus');
   if (!list) return;
 
-  const submissions = await storageGet(STORAGE_KEY_FIGMA);
-  badge && (badge.textContent = `${submissions.length} Link${submissions.length !== 1 ? 's' : ''} Submitted`);
+  badge && (badge.textContent = `${figmaSubmissions.length} Link${figmaSubmissions.length !== 1 ? 's' : ''} Submitted`);
   const statFig = document.getElementById('statFigmaLinks');
-  if (statFig) statFig.textContent = submissions.length;
+  if (statFig) statFig.textContent = figmaSubmissions.length;
 
-  if (!submissions.length) {
+  if (!figmaSubmissions.length) {
     statusEl && (statusEl.textContent = 'Awaiting Figma prototype submissions from participant teams...');
-    list.innerHTML = `<div style="text-align:center;padding:48px;font-family:'Space Mono';font-size:12px;color:var(--text-muted);">No Figma links submitted yet. Participants will submit from their workspace.</div>`;
+    list.innerHTML = `<div style="text-align:center;padding:48px;font-family:'Space Mono';font-size:12px;color:var(--text-muted);" id="figmaVaultEmpty">No Figma links submitted yet. Participants will submit from their workspace.</div>`;
     return;
   }
 
-  statusEl && (statusEl.textContent = `${submissions.length} design link(s) received — last synced ${new Date().toLocaleTimeString()}`);
+  statusEl && (statusEl.textContent = `${figmaSubmissions.length} design link(s) received — last updated ${new Date().toLocaleTimeString()}`);
 
-  list.innerHTML = submissions.map((s, i) => `
+  list.innerHTML = figmaSubmissions.map((s, i) => `
     <div class="figma-card">
-      <div><div class="figma-team-badge">${escHtml(s.teamName)} — ID: ${escHtml(s.teamId)}</div></div>
+      <div>
+        <div class="figma-team-badge">${s.teamName} — ID: ${s.teamId}</div>
+      </div>
       <div style="flex:1;">
         <div class="figma-link-text">
           <a href="${escHtml(s.url)}" target="_blank" rel="noopener">${escHtml(s.url)}</a>
         </div>
-        <div class="figma-meta">Submitted ${escHtml(s.submittedAt)} &nbsp;·&nbsp; Updated: ${escHtml(s.updatedAt)}</div>
+        <div class="figma-meta">Submitted at ${s.submittedAt} &nbsp;·&nbsp; Last updated: ${s.updatedAt}</div>
       </div>
       <div style="display:flex;gap:8px;flex-shrink:0;">
         <a href="${escHtml(s.url)}" target="_blank" rel="noopener"
@@ -1772,43 +1869,496 @@ async function renderAdminFigmaVault() {
   `).join('');
 }
 
-async function removeFigmaEntry(index) {
-  const submissions = await storageGet(STORAGE_KEY_FIGMA);
-  submissions.splice(index, 1);
-  await storageSet(STORAGE_KEY_FIGMA, submissions);
-  await renderAdminFigmaVault();
+function removeFigmaEntry(index) {
+  figmaSubmissions.splice(index, 1);
+  renderAdminFigmaVault();
   showSyncToast('Figma entry removed.');
 }
 
 function escHtml(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ══ LIVE POLLING — refresh admin vault every 8 seconds ══ */
-let _adminPollInterval = null;
-function startAdminLiveSync() {
-  if (_adminPollInterval) return;
-  _adminPollInterval = setInterval(async () => {
-    const adminPage = document.getElementById('page-admin-dashboard');
-    if (adminPage && adminPage.classList.contains('active')) {
-      await renderAdminZipRepository();
-      await renderAdminFigmaVault();
+/* ═══════════════════════════════════════════════════════════════
+   QUIZ ENGINE — Designverse Hackathon
+   40 questions, per-question leaderboard, live poll, admin control
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Question Bank (40 questions) ── */
+const QUIZ_BANK = [
+  { q:"What does UX stand for?", opts:["User Experience","User Execution","Unified Exchange","Unique Expression"], ans:0, cat:"UX Fundamentals", exp:"UX = User Experience — how a person feels when interacting with a system." },
+  { q:"Which color model is used for digital screens?", opts:["CMYK","RGB","HSL","Pantone"], ans:1, cat:"Color Theory", exp:"RGB (Red Green Blue) is the additive model used by all digital displays." },
+  { q:"What is a wireframe in design?", opts:["A rendered prototype","A skeletal layout of a page","A color palette","A brand guideline"], ans:1, cat:"Design Process", exp:"Wireframes are low-fidelity blueprints showing structure without visual design." },
+  { q:"Gestalt principle of 'proximity' refers to?", opts:["Similar items look related","Close items appear related","Shapes completing themselves","Symmetry in design"], ans:1, cat:"Design Theory", exp:"Proximity groups nearby elements together, creating visual hierarchy." },
+  { q:"What does CTA stand for in design?", opts:["Creative Team Action","Call To Action","Color Tone Adjustment","Content Type Analysis"], ans:1, cat:"UX Fundamentals", exp:"CTA (Call To Action) is a design element prompting user interaction." },
+  { q:"Which file format supports transparency in web images?", opts:["JPEG","BMP","PNG","GIF only"], ans:2, cat:"Visual Assets", exp:"PNG supports full alpha channel (transparency). JPEG does not." },
+  { q:"What is the golden ratio approximately equal to?", opts:["1.414","1.618","2.0","3.14"], ans:1, cat:"Design Theory", exp:"The golden ratio ≈ 1.618 and is found throughout nature and classic design." },
+  { q:"In typography, 'kerning' refers to?", opts:["Line height","Letter spacing between specific pairs","Paragraph indent","Font weight"], ans:1, cat:"Typography", exp:"Kerning adjusts spacing between specific character pairs for visual comfort." },
+  { q:"What is the primary purpose of a mood board?", opts:["Define code architecture","Gather visual inspiration and tone","Set team deadlines","Write user stories"], ans:1, cat:"Design Process", exp:"Mood boards collect visual references to align the team on look and feel." },
+  { q:"Accessibility guideline WCAG stands for?", opts:["Web Content Accessibility Guidelines","Web Color Application Guide","World Color Accessibility Group","Website Content Authority Guidelines"], ans:0, cat:"Accessibility", exp:"WCAG sets standards for making web content accessible to people with disabilities." },
+  { q:"What does F-pattern describe in UX?", opts:["Font selection","How users scan web pages","File naming convention","Feedback loops"], ans:1, cat:"UX Fundamentals", exp:"F-pattern describes the eye-tracking pattern users follow when scanning text-heavy pages." },
+  { q:"In design, 'affordance' means?", opts:["Clue that suggests how to use something","Cost of design tools","Accessibility score","Animation speed"], ans:0, cat:"Design Theory", exp:"Affordance is a property that signals to users how an object should be used." },
+  { q:"What is a design token?", opts:["A team pass","Named variable for design decisions (color, spacing)","An API key","A figma plugin"], ans:1, cat:"Design Systems", exp:"Design tokens are named values (like colors and spacing) shared across platforms." },
+  { q:"SVG stands for?", opts:["Scalable Vector Graphics","Standard Visual Guide","Screen View Generator","Styled Vector Grid"], ans:0, cat:"Visual Assets", exp:"SVG = Scalable Vector Graphics, XML-based format that scales without quality loss." },
+  { q:"The 60-30-10 rule in design refers to?", opts:["Font sizes","Color proportions","Grid columns","Team role split"], ans:1, cat:"Color Theory", exp:"60% dominant color, 30% secondary, 10% accent — a classic color proportion rule." },
+  { q:"What is a 'design sprint'?", opts:["A 5-day product design process","A type of animation","Speed coding challenge","A button click test"], ans:0, cat:"Design Process", exp:"A design sprint is a 5-day framework (by GV) to solve problems and test ideas." },
+  { q:"Which principle says 'less is more' in design?", opts:["Brutalism","Maximalism","Minimalism","Skeuomorphism"], ans:2, cat:"Design Theory", exp:"Minimalism strips design to essential elements, reducing cognitive load." },
+  { q:"What is 'heuristic evaluation'?", opts:["Color matching test","Expert review of UI against usability principles","User interview method","Typography audit"], ans:1, cat:"UX Research", exp:"Heuristic evaluation involves experts reviewing UI against Nielsen's 10 usability heuristics." },
+  { q:"Figma is primarily used for?", opts:["Video editing","3D modeling","Collaborative interface design","Database design"], ans:2, cat:"Design Tools", exp:"Figma is a cloud-based UI/UX design and prototyping tool with real-time collaboration." },
+  { q:"What does 'responsive design' mean?", opts:["Fast-loading pages","Design that adapts to different screen sizes","Animated transitions","High-contrast visuals"], ans:1, cat:"UX Fundamentals", exp:"Responsive design uses flexible layouts and media queries to work across devices." },
+  { q:"In Gestalt theory, 'closure' refers to?", opts:["Ending a project","Brain completing incomplete shapes","Grouping by color","Figure-ground separation"], ans:1, cat:"Design Theory", exp:"Closure is the tendency to perceive incomplete figures as complete shapes." },
+  { q:"What is a 'persona' in UX?", opts:["A brand mascot","A fictional user profile based on research","A design pattern","A type of layout"], ans:1, cat:"UX Research", exp:"A persona is a detailed fictional character representing a target user segment." },
+  { q:"Contrast ratio for normal text (WCAG AA) must be at least?", opts:["2:1","3:1","4.5:1","7:1"], ans:2, cat:"Accessibility", exp:"WCAG AA requires a 4.5:1 contrast ratio for normal text for readability." },
+  { q:"What is 'visual hierarchy' in design?", opts:["Ranking team members","Ordering elements by importance using size/color/contrast","A file structure","A color grading system"], ans:1, cat:"Design Theory", exp:"Visual hierarchy guides the viewer's eye through content in order of importance." },
+  { q:"A 'style guide' in design contains?", opts:["Project timelines","Consistent rules for typography, color, and components","Code snippets only","Meeting notes"], ans:1, cat:"Design Systems", exp:"A style guide documents design standards for consistency across products." },
+  { q:"'Iterative design' means?", opts:["Designing once perfectly","Repeated cycles of designing, testing, and improving","Copying competitor designs","Random design decisions"], ans:1, cat:"Design Process", exp:"Iterative design improves a product through repeated test-and-refine cycles." },
+  { q:"Tracking in typography refers to?", opts:["User analytics","Uniform letter-spacing across a text block","Font licensing","Page loading speed"], ans:1, cat:"Typography", exp:"Tracking (letter-spacing) adjusts space uniformly across entire words or blocks." },
+  { q:"What is a component library?", opts:["A set of reusable UI elements","A book of color swatches","A codebase","A font collection"], ans:0, cat:"Design Systems", exp:"A component library is a set of standardized, reusable UI building blocks." },
+  { q:"What does 'above the fold' mean in web design?", opts:["Content in the footer","Visible content without scrolling","The navigation bar","A print term for header"], ans:1, cat:"UX Fundamentals", exp:"Above the fold is the content visible on screen before any scrolling." },
+  { q:"A 'prototype' in design is?", opts:["Final production code","An early functional simulation of a product","A brand logo","A database schema"], ans:1, cat:"Design Process", exp:"A prototype simulates product interactions for testing without full development." },
+  { q:"What is 'negative space' in design?", opts:["Dark-themed UI","Empty space around/between design elements","Error states","Low-saturation colors"], ans:1, cat:"Design Theory", exp:"Negative space (whitespace) is the empty area that gives design room to breathe." },
+  { q:"A/B testing in UX means?", opts:["Testing two users","Comparing two design variants with real users","Testing on Android and iOS","A backup testing method"], ans:1, cat:"UX Research", exp:"A/B testing shows two variants to user groups to determine which performs better." },
+  { q:"What is 'microinteraction' in UI?", opts:["Tiny animated feedback for user actions","Micro-sized fonts","Hidden navigation","Small team collaboration"], ans:0, cat:"UX Fundamentals", exp:"Microinteractions are subtle animations/feedback that respond to user actions (e.g., button press)." },
+  { q:"What does CSS stand for?", opts:["Creative Style Sheets","Cascading Style Sheets","Computer Style System","Content Styling Script"], ans:1, cat:"Frontend", exp:"CSS = Cascading Style Sheets — the language for styling HTML documents." },
+  { q:"Skeuomorphic design means?", opts:["Flat and minimal","Digital objects mimicking real-world counterparts","Monochrome only","Grid-based layouts"], ans:1, cat:"Design Theory", exp:"Skeuomorphism designs digital elements to look like their physical counterparts (e.g., a leather calendar)." },
+  { q:"User journey map shows?", opts:["App architecture","A user's steps and emotions through a product experience","Server traffic","Team workflow"], ans:1, cat:"UX Research", exp:"A user journey map visualizes a user's path through a product, including touchpoints and emotions." },
+  { q:"What is 'information architecture'?", opts:["Building blueprints","Organizing and structuring content for usability","Server design","Typography rules"], ans:1, cat:"UX Fundamentals", exp:"Information architecture organizes and labels content so users can find what they need." },
+  { q:"The primary benefit of design systems is?", opts:["Speed of video rendering","Consistency and scalability across products","Smaller team size","Reduced server costs"], ans:1, cat:"Design Systems", exp:"Design systems ensure visual and functional consistency, speeding up development at scale." },
+  { q:"What is 'card sorting' used for?", opts:["Organizing physical files","Understanding how users categorize information","Selecting UI colors","Ranking team performance"], ans:1, cat:"UX Research", exp:"Card sorting is a UX research method to understand users' mental models for navigation." },
+  { q:"Designverse hackathon is organized by?", opts:["Google","Apple","The organizers present here 🎉","NASA"], ans:2, cat:"Hackathon Special", exp:"Of course — this hackathon is organized by the brilliant Designverse team! 🎉" }
+];
+
+/* ── Quiz State ── */
+let quizState = {
+  currentQIndex: -1,        // which question is "live" (-1 = none)
+  releasedUpTo: -1,         // admin has released up to this index
+  answered: {},             // { teamId: { qIdx: optionIndex } }
+  scores: {},               // { teamId: totalScore }
+  correct: {},              // { teamId: totalCorrect }
+  timerInterval: null,
+  timerLeft: 30,
+  answerRevealed: false,
+  quizEnded: false,
+  pollData: [],             // per-question poll array [counts per option]
+  leaderboardHistory: [],   // snapshot after each question
+  adminView: false,
+};
+const QUIZ_POINTS_FAST = 100;
+const QUIZ_POINTS_SLOW = 60;
+const QUIZ_TIMER_SEC = 30;
+const QUIZ_CIRCUMFERENCE = 2 * Math.PI * 38; // 238.76
+
+/* ── Quiz Init ── */
+function initQuizPage() {
+  const isLoggedIn = !!authenticatedStudentTeam || !!activeAdminUser;
+  const isAdmin = !!activeAdminUser;
+  const gate = document.getElementById('quizAccessGate');
+  const waiting = document.getElementById('quizWaitingScreen');
+  const active = document.getElementById('quizActiveView');
+  const result = document.getElementById('quizResultScreen');
+
+  // Hide all
+  [gate, waiting, active, result].forEach(el => el && (el.style.display = 'none'));
+
+  if (!isLoggedIn) { gate.style.display = 'block'; return; }
+
+  if (quizState.quizEnded) { result.style.display = 'block'; renderQuizResult(); return; }
+
+  if (quizState.currentQIndex < 0) {
+    waiting.style.display = 'block';
+    const teamTag = document.getElementById('quizWaitTeamTag');
+    if (teamTag) teamTag.textContent = 'TEAM: ' + (authenticatedStudentTeam?.name || activeAdminUser?.user?.toUpperCase() || 'ADMIN');
+    document.getElementById('quizProgressLabel').textContent = `${quizState.releasedUpTo + 1} / 40 Questions Released`;
+    return;
+  }
+
+  active.style.display = 'block';
+  renderCurrentQuestion();
+  renderQuizLeaderboard();
+}
+
+function renderCurrentQuestion() {
+  const q = QUIZ_BANK[quizState.currentQIndex];
+  if (!q) return;
+  const teamId = authenticatedStudentTeam?.id || 'admin';
+  const myAnswer = (quizState.answered[teamId] || {})[quizState.currentQIndex];
+  const revealed = quizState.answerRevealed;
+
+  document.getElementById('quizQNum').textContent = `QUESTION ${quizState.currentQIndex + 1} / 40`;
+  document.getElementById('quizQCategory').textContent = q.cat;
+  document.getElementById('quizQuestionText').textContent = q.q;
+  document.getElementById('quizStatQ').textContent = quizState.currentQIndex + 1;
+  document.getElementById('quizStatScore').textContent = quizState.scores[teamId] || 0;
+  document.getElementById('quizStatCorrect').textContent = quizState.correct[teamId] || 0;
+  document.getElementById('quizStatResponded').textContent =
+    Object.keys(quizState.answered).length + ' / ' + systemTeams.length;
+
+  const grid = document.getElementById('quizOptionsGrid');
+  const letters = ['A','B','C','D'];
+  grid.innerHTML = q.opts.map((opt, i) => {
+    let cls = 'quiz-option-btn';
+    if (myAnswer !== undefined) {
+      if (i === q.ans) cls += ' correct';
+      else if (i === myAnswer) cls += ' wrong';
     }
-  }, 8000);
+    return `<button class="${cls}" onclick="quizSelectOption(${i})"
+      ${(myAnswer !== undefined || revealed) ? 'disabled' : ''}>
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>`;
+  }).join('');
+
+  // Answer reveal box
+  const revealBox = document.getElementById('quizAnswerReveal');
+  const revealText = document.getElementById('quizCorrectAnswerText');
+  const explainText = document.getElementById('quizExplanationText');
+  if (revealed || myAnswer !== undefined) {
+    revealBox.classList.add('show');
+    revealText.textContent = q.opts[q.ans];
+    explainText.textContent = q.exp || '';
+  } else {
+    revealBox.classList.remove('show');
+  }
+
+  renderPoll();
+  renderQuizLeaderboard();
+  updateTimerRing();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+function quizSelectOption(optIdx) {
+  if (!authenticatedStudentTeam) return;
+  const teamId = authenticatedStudentTeam.id;
+  const qi = quizState.currentQIndex;
+  if ((quizState.answered[teamId] || {})[qi] !== undefined) return;
+
+  // Record answer
+  if (!quizState.answered[teamId]) quizState.answered[teamId] = {};
+  quizState.answered[teamId][qi] = optIdx;
+
+  // Update poll data
+  if (!quizState.pollData[qi]) quizState.pollData[qi] = [0,0,0,0];
+  quizState.pollData[qi][optIdx]++;
+
+  // Score
+  const q = QUIZ_BANK[qi];
+  if (optIdx === q.ans) {
+    const points = quizState.timerLeft > 15 ? QUIZ_POINTS_FAST : QUIZ_POINTS_SLOW;
+    quizState.scores[teamId] = (quizState.scores[teamId] || 0) + points;
+    quizState.correct[teamId] = (quizState.correct[teamId] || 0) + 1;
+  }
+
+  renderCurrentQuestion();
+  renderAdminQuizPanel();
+}
+
+/* ── Timer ── */
+function startQuizTimer() {
+  clearInterval(quizState.timerInterval);
+  quizState.timerLeft = QUIZ_TIMER_SEC;
+  quizState.answerRevealed = false;
+  updateTimerRing();
+  quizState.timerInterval = setInterval(() => {
+    quizState.timerLeft--;
+    updateTimerRing();
+    if (quizState.timerLeft <= 0) {
+      clearInterval(quizState.timerInterval);
+      autoRevealAnswer();
+    }
+  }, 1000);
+}
+
+function updateTimerRing() {
+  const arc = document.getElementById('quizTimerArc');
+  const txt = document.getElementById('quizTimerText');
+  if (!arc || !txt) return;
+  const pct = quizState.timerLeft / QUIZ_TIMER_SEC;
+  const offset = QUIZ_CIRCUMFERENCE * (1 - pct);
+  arc.style.strokeDashoffset = offset;
+  arc.style.stroke = quizState.timerLeft > 10 ? 'var(--accent)' : 'var(--red)';
+  txt.textContent = Math.max(0, quizState.timerLeft);
+}
+
+function autoRevealAnswer() {
+  quizState.answerRevealed = true;
+  renderCurrentQuestion();
+  snapshotLeaderboard();
+  setTimeout(() => renderQuizLeaderboard(), 200);
+  renderAdminQuizPanel();
+}
+
+function snapshotLeaderboard() {
+  const qi = quizState.currentQIndex;
+  const snap = Object.entries(quizState.scores)
+    .map(([id, sc]) => ({ id, name: systemTeams.find(t=>t.id===id)?.name || id, score: sc, correct: quizState.correct[id]||0 }))
+    .sort((a,b)=>b.score-a.score);
+  quizState.leaderboardHistory[qi] = snap;
+}
+
+/* ── Poll render ── */
+function renderPoll() {
+  const qi = quizState.currentQIndex;
+  const pollData = quizState.pollData[qi] || [0,0,0,0];
+  const total = pollData.reduce((a,b)=>a+b,0);
+  const q = QUIZ_BANK[qi];
+  const letters = ['A','B','C','D'];
+  const bars = document.getElementById('quizPollBars');
+  const pollTotal = document.getElementById('quizPollTotal');
+  if (!bars) return;
+  if (pollTotal) pollTotal.textContent = total + ' vote' + (total!==1?'s':'');
+
+  bars.innerHTML = pollData.map((cnt, i) => {
+    const pct = total > 0 ? Math.round((cnt/total)*100) : 0;
+    const isCorrect = (quizState.answerRevealed || (quizState.answered[authenticatedStudentTeam?.id||'']?.[qi] !== undefined));
+    const fillCls = isCorrect ? (i===q.ans ? 'fill-correct' : 'fill-wrong') : '';
+    return `<div class="poll-bar-row">
+      <span class="poll-bar-label">${letters[i]}</span>
+      <div class="poll-bar-track">
+        <div class="poll-bar-fill ${fillCls}" style="width:${pct}%">
+          ${pct>8?`<span class="poll-bar-pct">${pct}%</span>`:''}
+        </div>
+      </div>
+      <span class="poll-bar-count">${cnt}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ── Leaderboard render ── */
+function renderQuizLeaderboard(targetId = 'quizLeaderboardList', afterLabel = 'lbAfterLabel') {
+  const qi = quizState.currentQIndex;
+  const snap = quizState.leaderboardHistory[qi] ||
+    Object.entries(quizState.scores)
+      .map(([id, sc]) => ({ id, name: systemTeams.find(t=>t.id===id)?.name || id, score: sc }))
+      .sort((a,b)=>b.score-a.score);
+
+  const lb = document.getElementById(targetId);
+  const lbl = document.getElementById(afterLabel);
+  if (lbl) lbl.textContent = qi >= 0 ? `After Q${qi+1}` : 'After Q0';
+  if (!lb) return;
+
+  if (!snap || !snap.length) {
+    lb.innerHTML = '<div class="lb-empty">No scores yet</div>';
+    return;
+  }
+
+  const rankClasses = ['gold','silver','bronze'];
+  lb.innerHTML = snap.map((entry, idx) => {
+    const prevSnap = qi > 0 ? (quizState.leaderboardHistory[qi-1] || []) : [];
+    const prevRank = prevSnap.findIndex(e=>e.id===entry.id);
+    const delta = prevRank === -1 ? '' : (prevRank > idx ? '▲' : prevRank < idx ? '▼' : '—');
+    const deltaClass = delta === '▲' ? 'up' : 'same';
+    const rankCls = rankClasses[idx] || '';
+    return `<div class="lb-row">
+      <div class="lb-rank ${rankCls}">${idx===0?'🥇':idx===1?'🥈':idx===2?'🥉':'#'+(idx+1)}</div>
+      <div class="lb-team">${entry.name}</div>
+      ${delta ? `<span class="lb-delta ${deltaClass}">${delta}</span>` : ''}
+      <div class="lb-score">${entry.score} pts</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Quiz Result ── */
+function renderQuizResult() {
+  const teamId = authenticatedStudentTeam?.id || 'admin';
+  const myScore = quizState.scores[teamId] || 0;
+  const myCorrect = quizState.correct[teamId] || 0;
+  const allScores = Object.entries(quizState.scores).sort((a,b)=>b[1]-a[1]);
+  const rank = allScores.findIndex(([id])=>id===teamId)+1;
+
+  document.getElementById('resFinalScore').textContent = myScore;
+  document.getElementById('resCorrect').textContent = `${myCorrect}/40`;
+  document.getElementById('resRank').textContent = `#${rank||'—'}`;
+  document.getElementById('quizResultSummary').textContent =
+    `${authenticatedStudentTeam?.name || 'You'} finished the quiz! ${myCorrect >= 30 ? '🔥 Outstanding!' : myCorrect >= 20 ? '💪 Great effort!' : '👍 Good try!'}`;
+
+  renderQuizLeaderboard('quizFinalLeaderboard', null);
+  spawnConfetti();
+}
+
+function spawnConfetti() {
+  const burst = document.createElement('div');
+  burst.className = 'confetti-burst';
+  document.body.appendChild(burst);
+  const colors = ['#c6f135','#fff','#ffb700','#2f7fff','#ff2d2d'];
+  for (let i=0;i<60;i++) {
+    const d = document.createElement('div');
+    d.className = 'conf-dot';
+    const size = Math.random()*8+4;
+    d.style.cssText = `width:${size}px;height:${size}px;background:${colors[i%colors.length]};left:${Math.random()*100}vw;top:-10px;animation-delay:${Math.random()*0.6}s;animation-duration:${1.2+Math.random()*0.8}s;`;
+    burst.appendChild(d);
+  }
+  setTimeout(()=>burst.remove(), 3000);
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN QUIZ CONTROLS
+═══════════════════════════════════════════════ */
+function adminReleaseNextQuestion() {
+  if (quizState.releasedUpTo >= 39) { showSyncToast('All 40 questions released!'); return; }
+
+  // Snapshot leaderboard for the just-completed question
+  if (quizState.currentQIndex >= 0) {
+    snapshotLeaderboard();
+  }
+
+  clearInterval(quizState.timerInterval);
+  quizState.releasedUpTo++;
+  quizState.currentQIndex = quizState.releasedUpTo;
+  quizState.answerRevealed = false;
+
+  startQuizTimer();
+  renderAdminQuizPanel();
+  renderCurrentQuestion();
+
+  // Update participant waiting screens
+  document.getElementById('quizWaitingScreen').style.display = 'none';
+  document.getElementById('quizActiveView').style.display = 'block';
+
+  showSyncToast(`▶ Q${quizState.currentQIndex+1} released!`);
+}
+
+function adminSkipQuestion() {
+  if (quizState.currentQIndex < 0) { showSyncToast('No active question to skip.','var(--yellow)'); return; }
+  clearInterval(quizState.timerInterval);
+  quizState.answerRevealed = true;
+  snapshotLeaderboard();
+  renderAdminQuizPanel();
+  renderCurrentQuestion();
+  showSyncToast(`⏭ Q${quizState.currentQIndex+1} skipped.`,'var(--yellow)');
+}
+
+function adminRevealAnswer() {
+  if (quizState.currentQIndex < 0) { showSyncToast('No active question.','var(--yellow)'); return; }
+  clearInterval(quizState.timerInterval);
+  autoRevealAnswer();
+  showSyncToast(`✓ Answer for Q${quizState.currentQIndex+1} revealed.`);
+}
+
+function adminJumpToQuestion(idx) {
+  if (idx > quizState.releasedUpTo) {
+    showSyncToast(`Q${idx+1} not yet released. Release next to advance.`,'var(--yellow)');
+    return;
+  }
+  clearInterval(quizState.timerInterval);
+  quizState.currentQIndex = idx;
+  quizState.answerRevealed = true;
+  renderCurrentQuestion();
+  renderAdminQuizPanel();
+  showSyncToast(`Viewing Q${idx+1}`);
+}
+
+function adminResetQuiz() {
+  if (!confirm('Reset the entire quiz? All scores and answers will be cleared.')) return;
+  clearInterval(quizState.timerInterval);
+  quizState = { ...quizState, currentQIndex:-1, releasedUpTo:-1, answered:{}, scores:{}, correct:{}, timerLeft:30, answerRevealed:false, quizEnded:false, pollData:[], leaderboardHistory:[] };
+  renderAdminQuizPanel();
+  initQuizPage();
+  showSyncToast('↺ Quiz reset.','var(--red)');
+}
+
+function adminEndQuiz() {
+  clearInterval(quizState.timerInterval);
+  quizState.quizEnded = true;
+  snapshotLeaderboard();
+  renderQuizResult();
+  document.getElementById('quizActiveView').style.display = 'none';
+  document.getElementById('quizResultScreen').style.display = 'block';
+  showSyncToast('✓ Quiz ended. Final results shown.');
+}
+
+function adminExportQuizResults() {
+  try {
+    const wb = XLSX.utils.book_new();
+    const data = [['Rank','Team','Score','Correct','Team ID']];
+    const sorted = Object.entries(quizState.scores).sort((a,b)=>b[1]-a[1]);
+    sorted.forEach(([id, sc], i) => {
+      const team = systemTeams.find(t=>t.id===id);
+      data.push([i+1, team?.name||id, sc, quizState.correct[id]||0, id]);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    ws['!cols'] = [{wch:6},{wch:20},{wch:10},{wch:10},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, ws, 'Quiz_Results');
+    XLSX.writeFile(wb, 'designverse_quiz_results.xlsx');
+    showSyncToast('📥 Quiz results exported!');
+  } catch(e) { showSyncToast('Export failed: '+e.message,'var(--red)'); }
+}
+
+function renderAdminQuizPanel() {
+  const navGrid = document.getElementById('adminQNavGrid');
+  const scheduleList = document.getElementById('adminQScheduleList');
+  const badge = document.getElementById('adminQuizStatusBadge');
+
+  if (badge) badge.textContent = `${quizState.releasedUpTo+1}/40 Released`;
+  if (document.getElementById('adminCurrentQStat'))
+    document.getElementById('adminCurrentQStat').textContent = quizState.currentQIndex>=0 ? quizState.currentQIndex+1 : '—';
+  if (document.getElementById('adminResponsesStat'))
+    document.getElementById('adminResponsesStat').textContent = Object.keys(quizState.answered).length;
+  if (document.getElementById('adminTeamActiveStat'))
+    document.getElementById('adminTeamActiveStat').textContent = systemTeams.length;
+  const avgScore = Object.values(quizState.scores).length
+    ? Math.round(Object.values(quizState.scores).reduce((a,b)=>a+b,0)/Object.values(quizState.scores).length)
+    : 0;
+  if (document.getElementById('adminAvgScoreStat'))
+    document.getElementById('adminAvgScoreStat').textContent = avgScore;
+
+  if (navGrid) {
+    navGrid.innerHTML = QUIZ_BANK.map((_, i) => {
+      let cls = 'q-nav-pill locked';
+      if (i === quizState.currentQIndex) cls = 'q-nav-pill active-q';
+      else if (i <= quizState.releasedUpTo) cls = 'q-nav-pill released';
+      return `<button class="${cls}" onclick="adminJumpToQuestion(${i})">Q${i+1}</button>`;
+    }).join('');
+  }
+
+  if (scheduleList) {
+    scheduleList.innerHTML = QUIZ_BANK.map((q, i) => {
+      let rowCls = 'q-schedule-row';
+      let statusTag = '<span class="tag tag-blue" style="font-size:9px;">Locked</span>';
+      if (i === quizState.currentQIndex) { rowCls += ' active-row'; statusTag = '<span class="tag tag-yellow" style="font-size:9px;">▶ Active</span>'; }
+      else if (i < quizState.currentQIndex) { rowCls += ' released-row'; statusTag = '<span class="tag tag-green" style="font-size:9px;">✓ Done</span>'; }
+      else if (i <= quizState.releasedUpTo) { rowCls += ' released-row'; statusTag = '<span class="tag tag-green" style="font-size:9px;">Released</span>'; }
+
+      const responses = Object.values(quizState.answered).filter(a=>a[i]!==undefined).length;
+      return `<div class="${rowCls}">
+        <span class="q-schedule-num">Q${i+1}</span>
+        <span class="q-schedule-text" title="${q.q}">${q.q}</span>
+        <span class="tag" style="background:#111;color:#555;font-size:9px;padding:2px 6px;flex-shrink:0;">${q.cat}</span>
+        <span style="font-family:'Space Mono';font-size:10px;color:var(--text-dim);width:60px;text-align:center;flex-shrink:0;">${responses}/${systemTeams.length}</span>
+        ${statusTag}
+        ${i > quizState.releasedUpTo ? `<button class="btn-action" style="font-size:9px;padding:4px 10px;" onclick="adminJumpReleaseToQ(${i})">Release</button>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // Admin leaderboard
+  renderQuizLeaderboard('adminLeaderboardList', 'adminLbAfterLabel');
+}
+
+function adminJumpReleaseToQ(idx) {
+  if (!confirm(`Release Question ${idx+1} now?`)) return;
+  if (quizState.currentQIndex >= 0) snapshotLeaderboard();
+  clearInterval(quizState.timerInterval);
+  quizState.releasedUpTo = idx;
+  quizState.currentQIndex = idx;
+  quizState.answerRevealed = false;
+  startQuizTimer();
+  renderAdminQuizPanel();
+  renderCurrentQuestion();
+  document.getElementById('quizWaitingScreen').style.display = 'none';
+  document.getElementById('quizActiveView').style.display = 'block';
+  showSyncToast(`▶ Q${idx+1} released directly!`);
+}
+
+/* Hook into tab routing for quiz */
+
   setupNoCopyConstraints();
   renderRosterFields();
   buildLoginFields(3);
   refreshTeamRegistryViews();
   startGlobalChronometer();
-  startAdminLiveSync();
-  await renderAdminZipRepository();
-  await renderAdminFigmaVault();
+  renderAdminFigmaVault();
+  renderAdminQuizPanel();
   excelLog('Admin dashboard ready. Use Export to download data or Import to sync from Excel.', 'ok');
-});
+
 </script>
 </body>
 </html>
