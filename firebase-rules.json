@@ -22,6 +22,14 @@
     "teams": {
       ".read": true,
       ".write": true
+    },
+    "answered": {
+      ".read": true,
+      ".write": true
+    },
+    "figmaSubmissions": {
+      ".read": true,
+      ".write": true
     }
   }
 }
